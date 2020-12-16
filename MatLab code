@@ -32,7 +32,7 @@ title('Booth Function')
 hold on;
 
 %--------------Init fitness and init pBest, gBest Partcles
-fitnessVal = y;
+fitnessVal = f;
 pBestX = x;%setting initial pBest particles
 pBestY = y;
 pBest_fitness = fitnessVal;% Keeping pBest fitness values
@@ -57,7 +57,7 @@ for run=1:20
          
                 % Checking the boundries of the newly generated particle
                 if  x(j) < Lb(1)
-                    y(j) = Lb(1);
+                    x(j) = Lb(1);
                 elseif  x(j)> Ub(1)
                     x(j) = Ub(1);
                 end
@@ -68,7 +68,7 @@ for run=1:20
                     y(j) = Ub(2);
                 end
                  %Calculate the fitness of new particle
-                    fitness(j) =(x(j)+(2*y(j))-7).^2+((2*x(j))+y(j)-5).^2 ;
+                    fitness(j) =(x(j)+(2*y(j))-7)^2+((2*x(j))+y(j)-5)^2 ;
                     
                  %Compare the fitness of the new particle with its pBest
                 if(fitness(j)< pBest_fitness(j))%consider minimum the best
