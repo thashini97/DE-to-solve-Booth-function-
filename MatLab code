@@ -57,7 +57,7 @@ for run=1:20
          
                 % Checking the boundries of the newly generated particle
                 if  x(j) < Lb(1)
-                    x(j) = Lb(1);
+                    y(j) = Lb(1);
                 elseif  x(j)> Ub(1)
                     x(j) = Ub(1);
                 end
@@ -100,7 +100,6 @@ end
 
      toc;%timing
      
-     
     % the best solution
     gBestX 
     gBestY
@@ -120,7 +119,6 @@ end
     title('Running time against the runs')
     xlabel('Runs')
     ylabel('Running time')
-    
 
     figure
     plot(bestfitness,'-r')
@@ -128,4 +126,6 @@ end
     xlabel('Runs')
     ylabel('Best fitness values')
 
+
 end
+
