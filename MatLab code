@@ -122,12 +122,10 @@ end
     ylabel('Running time')
     
 
-    
     figure
     plot(bestfitness,'-r')
     title('Best fitness values against the runs')
     xlabel('Runs')
     ylabel('Best fitness values')
-
 
 end
