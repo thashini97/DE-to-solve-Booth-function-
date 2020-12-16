@@ -1,0 +1,133 @@
+function[] = boothfnc()
+clc; 
+clear; %clear the variable values
+
+Lb = [-10 -10];%lowerbound
+Ub = [10 10];%upperbound
+n = 10;%Population size
+w = 1; c1 = 2; c2 = 2;
+iterations = 100;
+
+
+% initialization of particles
+x = Lb(1) +(Ub(1)-Lb(1)).*rand(1,n)
+y = Lb(2) +(Ub(2)-Lb(2)).*rand(1,n)
+
+%Calculate the initial fitness
+f = (x+(2*y)-7).^2 + ((2*x)+y-5).^2
+
+%Function to generate initial velocities
+v1(1,n) = 0;
+v2(1,n) = 0;
+
+%Drawing the graph
+[X,Y] = meshgrid(-10:1:10);
+f1=(X+(2*Y)-7).^2 + ((2*X)+Y-5).^2;
+mesh(X,Y,f1)
+hold on;
+
+%Plot the initial particles on the graph
+plot3(x,y,f,'*')
+title('Booth Function')
+hold on;
+
+%--------------Init fitness and init pBest, gBest Partcles
+fitnessVal = y;
+pBestX = x;%setting initial pBest particles
+pBestY = y;
+pBest_fitness = fitnessVal;% Keeping pBest fitness values
+
+[gBest_val idGbest] = min(fitnessVal)%gBest fitness and the index
+gBestX = x(idGbest)%setting initial gBest particle
+gBestY = y(idGbest)
+
+%--------------start the iterations
+for run=1:20
+    tic;
+        for i=1:iterations %stoping condition    
+            for j=1:n % to take one particle at a time
+        
+                %update velocity
+                v1(j) = w*v1(j) +  c1*rand()*(pBestX(j)-x(j))+c2*rand()*(gBestX-x(j));
+                v2(j) = w*v2(j) +  c1*rand()*(pBestY(j)-y(j))+c2*rand()*(gBestY-y(j));
+         
+                %update the particle
+                x(j) = x(j) + v1(j);
+                y(j) = y(j) + v2(j);
+         
+                % Checking the boundries of the newly generated particle
+                if  x(j) < Lb(1)
+                    y(j) = Lb(1);
+                elseif  x(j)> Ub(1)
+                    x(j) = Ub(1);
+                end
+                
+                if  y(j) < Lb(2)
+                    y(j) = Lb(2);
+                elseif  y(j)> Ub(2)
+                    y(j) = Ub(2);
+                end
+                 %Calculate the fitness of new particle
+                    fitness(j) =(x(j)+(2*y(j))-7).^2+((2*x(j))+y(j)-5).^2 ;
+                    
+                 %Compare the fitness of the new particle with its pBest
+                if(fitness(j)< pBest_fitness(j))%consider minimum the best
+                    pBest_fitness(j) = fitness(j);%updating pBest fitness vector
+                    
+                    %updating pBest value vector
+                    pBestX(j) = x(j); 
+                    pBestY(j) = y(j); 
+                end
+        
+                %Compare the fitness of the new particle with the gBest
+                if(fitness(j)< gBest_val)%consider minimum the best
+                    gBest_val = fitness(j);
+                    gBestX = x(j);
+                    gBestY = y(j);
+                end 
+                
+            end 
+            ConvergenceCurve(i,1)= gBest_val;
+            disp(['Iterations No. ' int2str(i) ' , the best fitness value is ' num2str(gBest_val)]);
+            
+        end
+        
+        runingTime(run,1)=toc;
+        bestfitness(run,1)=gBest_val; 
+        
+        
+end
+
+     toc;%timing
+     
+     
+    % the best solution
+    gBestX 
+    gBestY
+    gBest_val % quality of the best solution.
+    plot3(gBestX,gBestY,gBest_val,'-s','MarkerSize',10,'MarkerFaceColor','r')
+    toc;%timing
+    
+    figure
+    plot(ConvergenceCurve,'r-')
+    title('Best fitness values against the iteration')
+    xlabel('Iterations')
+    ylabel('Fitness Value')
+    
+    
+    figure
+    plot(runingTime,'-r')
+    title('Running time against the runs')
+    xlabel('Runs')
+    ylabel('Running time')
+    
+
+    
+    figure
+    plot(bestfitness,'-r')
+    title('Best fitness values against the runs')
+    xlabel('Runs')
+    ylabel('Best fitness values')
+
+
+end
